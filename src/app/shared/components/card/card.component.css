@@ -1,0 +1,10 @@
+::ng-deep [card-header] {
+    @apply font-bold mb-3 text-xl;   
+}
+::ng-deep [card-body] {
+    @apply mb-3;   
+}
+::ng-deep [card-footer] {
+    @apply mb-3;
+}
+    

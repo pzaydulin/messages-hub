@@ -10,7 +10,7 @@ export const routes: Routes = [
     providers: [],
     children: [
       {
-        path: 'login',
+        path: '',
         loadComponent: () =>
           import('./pages/login/login.component').then((m) => m.LoginComponent),
       },

@@ -19,6 +19,7 @@ interface City {
     ButtonModule,
     MultiSelectModule,
   ],
+  // templateUrl: './app.component.html', 
   template: '<router-outlet />',
   styleUrl: './app.component.css',
 })
