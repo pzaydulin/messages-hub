@@ -1,9 +1,10 @@
-import { Component, Inject, signal } from '@angular/core';
+import { Component, Inject, OnInit, signal } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FormsModule } from '@angular/forms';
+import { PrimeNGConfig } from 'primeng/api';
 
 interface City {
   name: string;
@@ -19,11 +20,15 @@ interface City {
     ButtonModule,
     MultiSelectModule,
   ],
-  // templateUrl: './app.component.html', 
+  // templateUrl: './app.component.html',
   template: '<router-outlet />',
   styleUrl: './app.component.css',
 })
-export class AppComponent {
+
+// RIPPLE при очистке не забудь об этом!!!
+
+
+export class AppComponent implements OnInit {
   primeTheme = 'lara-light-blue';
   darkMode = signal<{ dark: boolean; prime: string }>({
     dark: true,
@@ -42,7 +47,15 @@ export class AppComponent {
     { name: 'London', code: 'LDN' },
     { name: 'Istanbul', code: 'IST' },
   ];
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private primengConfig: PrimeNGConfig
+  ) {}
+
+  ngOnInit() {
+    this.primengConfig.ripple = true;
+  }
 
   setTheme() {
     if (this.darkMode().dark === true) {

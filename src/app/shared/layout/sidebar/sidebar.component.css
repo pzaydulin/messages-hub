@@ -1,0 +1,4 @@
+::ng-deep .p-button-icon {
+    @apply pr-3 pl-2;
+}
+

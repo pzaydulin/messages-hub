@@ -1,0 +1,20 @@
+
+:host ::ng-deep .p-menu .p-menuitem-link .p-menuitem-icon {
+    @apply text-primary text-[16px];
+}
+
+:host ::ng-deep .p-menu {
+  @apply border-0 rounded-none bg-transparent;
+}
+
+:host ::ng-deep .p-menu .p-menuitem-link:hover {
+  @apply bg-background border-none;
+}
+
+:host ::ng-deep .p-menu .p-menuitem-link {
+  @apply bg-foreground;
+}
+
+:host ::ng-deep .p-menu  .p-menuitem-link-active {
+  @apply bg-background;
+}
