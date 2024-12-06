@@ -16,15 +16,15 @@ export class MenuComponent {
   ngOnInit() {
     this.items = [
       {
-        label: 'Messages',
+        label: 'Inbox',
         icon: 'pi pi-inbox',
         routerLink: ['/messages'],
         routerLinkActiveOptions: { exact: true },
       },
       {
-        label: 'Send Messages',
+        label: 'Sent',
         icon: 'pi pi-send',
-        routerLink: ['/send'],
+        routerLink: ['/sent'],
         routerLinkActive: 'is-active',
       },
       {

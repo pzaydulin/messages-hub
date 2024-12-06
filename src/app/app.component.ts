@@ -26,7 +26,8 @@ interface City {
 })
 
 // RIPPLE при очистке не забудь об этом!!!
-
+// https://sakai.primeng.org/documentation
+// optional configuration with the default configuration
 
 export class AppComponent implements OnInit {
   primeTheme = 'lara-light-blue';

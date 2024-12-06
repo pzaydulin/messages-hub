@@ -28,6 +28,13 @@ export const routes: Routes = [
             (m) => m.MessagesComponent
           ),
       },
+      {
+        path: 'compose',
+        loadComponent: () =>
+          import('./pages/compose/compose.component').then(
+            (m) => m.ComposeComponent
+          ),
+      },
     ],
   },
   //   { path: '**', redirectTo: 'messages' },

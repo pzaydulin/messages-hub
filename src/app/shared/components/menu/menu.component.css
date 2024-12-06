@@ -4,7 +4,7 @@
 }
 
 :host ::ng-deep .p-menu {
-  @apply border-0 rounded-none bg-transparent;
+  @apply border-0 rounded-none bg-transparent w-full
 }
 
 :host ::ng-deep .p-menu .p-menuitem-link:hover {
@@ -18,3 +18,4 @@
 :host ::ng-deep .p-menu  .p-menuitem-link-active {
   @apply bg-background;
 }
+
