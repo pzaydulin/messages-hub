@@ -1,0 +1,49 @@
+<form [formGroup]="loginForm" (ngSubmit)="login.emit(loginForm.getRawValue())" novalidate>
+  <div class="field mb-3">
+    <input
+      id="email"
+      formControlName="email"
+      placeholder="Enter email"
+      required
+      type="text"
+      aria-describedby="email-help"
+      class="w-full"
+      pInputText
+    />
+    <small id="email-help" class="p-error block"  
+        *ngIf="loginForm.controls['email'].invalid && (loginForm.controls['email'].dirty || !loginForm.controls['email'].pristine)"
+        >Email is not valid.</small>
+
+  </div>
+  <div class="field mb-3">
+    <p-password
+      id="password"
+      formControlName="password"
+      placeholder="Enter password"
+      [toggleMask]="true"
+      aria-describedby="password-help"
+      class="w-full"
+      [feedback]="false"
+      [style]="{ width: '100%' }"
+      [inputStyle]="{ width: '100%' }"
+    ></p-password>
+    <small id="password-help" class="p-error block"
+        *ngIf="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || !loginForm.controls['password'].pristine)"    
+        >Password is not valid.</small>
+  </div>
+
+  <div class="text-center mt-6">
+  <p-button 
+    label="Sign in" 
+    type="submit"
+    [style]="{ padding: '8px 32px' }"
+    [disabled]="loginForm.invalid || loginStatus() === 'authenticating'"
+    icon="pi pi-sign-in" iconPos="right"></p-button>
+
+  <small id="password-help" class="p-error block mt-2">
+    @if (loginStatus() === 'error') { Could not log you in with those details. }
+    @if (loginStatus() === 'authenticating') { Show spinner... } 
+    @if (loginStatus() === 'success') { User logged in successfully... }
+  </small>
+  </div>
+</form>
