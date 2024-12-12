@@ -1,7 +1,8 @@
 export interface IUser {
     _id: string;
-    name: string;
     email: string;
+    name: string;
+    token: string;
 }
 
 export interface ILogin {
@@ -9,8 +10,7 @@ export interface ILogin {
     password: string;
 }
 
-export interface ILoginResponse { 
+export interface AuthData { 
     message: string;
-    token: string;
-    user: IUser;
+    data: IUser;
 }

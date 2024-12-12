@@ -1,13 +1,17 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../data-access/auth.service';
-import { catchError, EMPTY, Subject, switchMap } from 'rxjs';
-import { ILogin } from '../../../../core/models/auth.interfaces';
+import { catchError, delay, EMPTY, Observable, of, Subject, switchMap, tap } from 'rxjs';
+import { AuthData, ILogin, IUser } from '../../../../core/models/auth.interfaces';
+import { HttpErrorResponse } from '@angular/common/http';
+import { setErrorMessage } from '../../../../shared/utils/error.utils';
 
-export type LoginStatus = 'pending' | 'authenticating' | 'success' | 'error';
+export type LoginStatus = 'pending' | 'authenticating' | 'error';
 
 interface LoginState {
   status: LoginStatus;
+  currentUser: IUser | undefined ;
+  error: string;
 }
 
 @Injectable({
@@ -16,47 +20,82 @@ interface LoginState {
 export class LoginService {
   private authService = inject(AuthService);
 
-  // sources
-  error$ = new Subject<any>();
-  login$ = new Subject<ILogin>();
-
-  userAuthenticated$ = this.login$.pipe(
-    switchMap((credentials) =>
-      this.authService.login(credentials).pipe(
-        catchError((err) => {
-          this.error$.next(err);
-          return EMPTY;
-        })
-      )
-    )
-  );
-
-  // state
+  // Initial state
   private state = signal<LoginState>({
     status: 'pending',
+    currentUser: undefined,
+    error: '',
   });
 
-  // selectors
+  // Selectors
   status = computed(() => this.state().status);
+  currentUser = computed(() => this.state().currentUser);
+  errorMessage = computed(() => this.state().error);
+
+  // Sources
+  login$ = new Subject<ILogin>();
 
   constructor() {
-    // reducers
-    this.userAuthenticated$
-      .pipe(takeUntilDestroyed())
-      .subscribe(() =>
-        this.state.update((state) => ({ ...state, status: 'success' }))
-      );
-
+    // Reducers
     this.login$
-      .pipe(takeUntilDestroyed())
-      .subscribe(() =>
-        this.state.update((state) => ({ ...state, status: 'authenticating' }))
-      );
+      .pipe(
+        tap(() => this.setLoadingIndicator('authenticating')),
+        switchMap((credentials) =>
+          this.getAuthData(credentials).pipe(
+            tap((authData) => this.setUserData(authData))
+          )
+        ),
+        // To better see the loading message
+        delay(1000),
+        takeUntilDestroyed()
+      )
+      .subscribe();
+  }
 
-    this.error$
-      .pipe(takeUntilDestroyed())
-      .subscribe(() =>
-        this.state.update((state) => ({ ...state, status: 'error' }))
-      );
+  private setLoadingIndicator(status: LoginStatus): void {
+    this.state.update((state) => ({
+      ...state,
+      status,
+    }));
+  }
+
+  private getAuthData(credentials: ILogin): Observable<AuthData> {
+    return this.authService
+      .login(credentials)
+      .pipe(catchError((err) => this.setError(err)));
+  }
+
+  private setUserData(authData: AuthData): void {
+    this.state.update((state) => ({
+      ...state,
+      status: 'authenticating',
+      currentUser: authData.data,
+      error: "",
+    }));
+  }
+
+  private setError(err: HttpErrorResponse): Observable<never> {
+    const errorMessage = setErrorMessage(err);
+    this.state.update((state) => ({
+      ...state,
+      status: 'error',
+      currentUser: undefined,
+      error: errorMessage,
+    }));
+    return EMPTY;
+  }
+
+  signIn(credentials: ILogin): void {
+    this.login$.next(credentials);
+  };
+
+  logOut():void {
+    this.state.update((state) => ({
+      ...state, 
+      status: 'pending',
+      currentUser: undefined,
+      error: ""
+    }));
+    this.authService.logout();
   }
 }

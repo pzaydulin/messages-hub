@@ -41,9 +41,9 @@
     icon="pi pi-sign-in" iconPos="right"></p-button>
 
   <small id="password-help" class="p-error block mt-2">
-    @if (loginStatus() === 'error') { Could not log you in with those details. }
-    @if (loginStatus() === 'authenticating') { Show spinner... } 
-    @if (loginStatus() === 'success') { User logged in successfully... }
+    @if (loginStatus() === 'error') { {{error()}} }
+    @if (loginStatus() === 'authenticating') { Loading...  } 
   </small>
   </div>
 </form>
+

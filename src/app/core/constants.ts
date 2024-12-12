@@ -18,3 +18,6 @@ export const API_ENDPOINT = {
     READ: env.apiUrl + '/message',
   },
 };
+
+
+export const STORAGE_KEY = "auth_data";
