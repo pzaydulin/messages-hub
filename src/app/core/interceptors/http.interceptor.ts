@@ -9,7 +9,6 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const token = storage.getToken();
 
-console.log('interceptor token',token)
   if (token) {
     req = req.clone({
       setHeaders: {

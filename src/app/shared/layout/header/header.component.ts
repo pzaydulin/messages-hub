@@ -1,8 +1,6 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar'; 
-import { AuthService } from '../../../pages/auth/data-access/auth.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { LoginService } from '../../../pages/auth/login/data-access/login.service';
 
@@ -15,13 +13,8 @@ import { LoginService } from '../../../pages/auth/login/data-access/login.servic
 })
 export class HeaderComponent {
   private loginService = inject(LoginService);
-  private router = inject(Router);
-  // private destroyRef = inject(DestroyRef);
 
   onLogout() {
     this.loginService.logOut();
-      // .pipe(takeUntilDestroyed(this.destroyRef))
-      // .subscribe();
-    this.router.navigate(['auth', 'login']);
   }
 }
