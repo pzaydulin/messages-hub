@@ -67,16 +67,14 @@ body .p-component {
   @apply px-3 py-2 border-2 border-input rounded-md shadow-none focus:bg-accent focus:border-blue-200 hover:border-blue-200;
 }
 .p-button {
-  @apply bg-primary text-white m-0 p-3 border-none shadow-none;
+  @apply m-0 p-3 border-none shadow-none;
 }
 
 body {
   @apply bg-background;
 }
 
-a {
-  @apply text-primary hover:underline;
-}
+
 
 @layer reset {
   /* here you can override the default primeng styles */

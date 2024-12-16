@@ -1,6 +1,6 @@
-import { computed, Injectable, signal } from '@angular/core';
-import { AuthData, IUser } from '../models/auth.interfaces';
+import { computed, Injectable, Signal, signal } from '@angular/core';
 import { STORAGE_KEY } from '../constants';
+import { IUser } from '../models/user.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,8 @@ export class StorageService {
   storageData = signal(this.getItem())
 
   // select
-  isAuth = computed(() => !!this.storageData())
+  isAuth: Signal<boolean> = computed(() => !!this.storageData())
+  currentUser: Signal<IUser | undefined> = computed(() =>  (this.isAuth()) ? this.getCurrentUser() : null);
   
   setItem(data: any) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -31,5 +32,9 @@ export class StorageService {
       return (JSON.parse(data) as IUser).token;
     }
     return null;
+  }
+  getCurrentUser() {
+    const data = this.getItem();
+    return data ? JSON.parse(data) : undefined;
   }
 }

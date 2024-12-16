@@ -14,16 +14,18 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'primeng-tailwindcss' title`, () => {
+  it(`should have the 'messages-hub' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('primeng-tailwindcss');
+    expect(app.title).toEqual('messages-hub');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, primeng-tailwindcss');
+    expect(compiled.querySelector('h1')?.textContent).toContain(
+      'Hello, messages-hub'
+    );
   });
 });

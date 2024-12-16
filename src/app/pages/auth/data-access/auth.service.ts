@@ -6,6 +6,8 @@ import { API_ENDPOINT } from '../../../core/constants';
 import { StorageService } from '../../../core/data-access/storage.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { Store } from '@ngxs/store';
+import { GetLoggedInUser } from '../../../core/store-ngxs/user.store';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,7 @@ export class AuthService {
   private router: Router = inject(Router);  
   private storage: StorageService = inject(StorageService);
   private destroyRef = inject(DestroyRef)
-
+private store = inject(Store)
   constructor() {}
 
   login(credentials: ILogin): Observable<AuthData> {

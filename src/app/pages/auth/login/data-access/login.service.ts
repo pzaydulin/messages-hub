@@ -2,9 +2,10 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../data-access/auth.service';
 import { catchError, delay, EMPTY, Observable, of, Subject, switchMap, tap } from 'rxjs';
-import { AuthData, ILogin, IUser } from '../../../../core/models/auth.interfaces';
+import { AuthData, ILogin } from '../../../../core/models/auth.interfaces';
 import { HttpErrorResponse } from '@angular/common/http';
 import { setErrorMessage } from '../../../../shared/utils/error.utils';
+import { IUser } from '../../../../core/models/user.interfaces';
 
 export type LoginStatus = 'pending' | 'authenticating' | 'error';
 

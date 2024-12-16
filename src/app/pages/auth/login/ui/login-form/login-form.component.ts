@@ -18,10 +18,11 @@ import { CommonModule } from '@angular/common';
     ButtonModule,
   ],
   templateUrl: './login-form.component.html',
+  styleUrl: './login-form.component.css',
 })
 export class LoginFormComponent {
   loginStatus = input.required<LoginStatus>();
-  error = input<string>("");
+  error = input<string>('');
   login = output<ILogin>();
 
   private fb = inject(FormBuilder);

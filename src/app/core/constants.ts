@@ -12,6 +12,7 @@ export const API_ENDPOINT = {
   },
   MESSAGES: {
     ALL: env.apiUrl + '/message',
+    FILTER: env.apiUrl + '/message',
     CREATE: env.apiUrl + '/message',
     GET: env.apiUrl + '/message',
     DELETE: env.apiUrl + '/message',
