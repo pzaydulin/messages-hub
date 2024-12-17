@@ -42,10 +42,12 @@ export class MessageService {
   // get currentuser from NgXs store
   private store: Store = inject(Store);
 
+  // get currentuser from login.STATE
+  // TODO: 
+
   messages$ = new Subject<IMessage[]>();
 
   constructor() {
-
     const source: userSource = 'ngxs';
 
     this.messages$
@@ -59,19 +61,18 @@ export class MessageService {
 
   getCurrentUser(source: userSource) {
     let user = undefined;
-    if (source === "localstorage") {
+    if (source === 'localstorage') {
       user = this.storage.currentUser();
-    } else if (source === 'ngxs')  {
-       return this.store.select(UserState.getLoggedInUser).pipe(
-         map((u) => (user = u)),
-         tap((user) => this.setUserData(user))
-       );        
+    } else if (source === 'ngxs') {
+      return this.store.select(UserState.getLoggedInUser).pipe(
+        //  map((u) => (user = u)),
+        tap((user) => this.setUserData(user))
+      );
     }
     this.setUserData(user);
     return of(user);
   }
   getMessages(userData: IUser | undefined): Observable<IMessage[]> {
-
     return userData
       ? this.http
           .get<IApiResponse<IMessage[]>>(
@@ -84,8 +85,7 @@ export class MessageService {
       : of([] as IMessage[]);
   }
 
-
-  setUserData(data:IUser | undefined) {
+  setUserData(data: IUser | undefined) {
     this.messagesState.update((state) => ({
       ...state,
       currentUser: data,
@@ -94,8 +94,8 @@ export class MessageService {
 
   setMessagesData(data: IMessage[]) {
     this.messagesState.update((state) => ({
-     ...state,
-      messages: data
+      ...state,
+      messages: data,
     }));
   }
 

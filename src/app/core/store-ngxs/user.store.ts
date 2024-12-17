@@ -12,6 +12,10 @@ export class GetLoggedInUser {
   static readonly type = '[User] Get Logged In';
 }
 
+export class ClearUsersData {
+  static readonly type = '[User] Clear Data';
+}
+
 export interface UserStateModel {
   users: IUser[] | undefined;
   user: IUser | undefined;
@@ -51,6 +55,14 @@ export class UserState {
     );
   }
 
+  @Action(ClearUsersData)
+  clearUsersData(ctx: StateContext<UserStateModel>) {
+    ctx.patchState({
+      users: undefined,
+      user: undefined,
+    });
+  }
+
   @Selector([UserState])
   static getUsers(state: UserStateModel) {
     return state.users;
@@ -58,7 +70,6 @@ export class UserState {
 
   @Selector()
   static getLoggedInUser(state: UserStateModel) {
-    console.log('selector state.user', state.user);
     return state.user;
   }
 }

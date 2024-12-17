@@ -7,12 +7,13 @@ import { httpInterceptor } from './core/interceptors/http.interceptor';
 import { provideStore } from '@ngxs/store';
 import { UserState } from './core/store-ngxs/user.store';
 import { withNgxsReduxDevtoolsPlugin } from '@ngxs/devtools-plugin';
+import { MessageState } from './core/store-ngxs/message.store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimations(),
     provideHttpClient(withInterceptors([httpInterceptor])),
-    provideStore([UserState], withNgxsReduxDevtoolsPlugin()),
+    provideStore([UserState, MessageState], withNgxsReduxDevtoolsPlugin()),
   ],
 };

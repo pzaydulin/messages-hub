@@ -7,7 +7,8 @@ import { StorageService } from '../../../core/data-access/storage.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { GetLoggedInUser } from '../../../core/store-ngxs/user.store';
+import { ClearUsersData, UserState } from '../../../core/store-ngxs/user.store';
+import { ClearMassages } from '../../../core/store-ngxs/message.store';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +17,8 @@ export class AuthService {
   private http: HttpClient = inject(HttpClient);
   private router: Router = inject(Router);  
   private storage: StorageService = inject(StorageService);
+  private store: Store = inject(Store);
   private destroyRef = inject(DestroyRef)
-private store = inject(Store)
-  constructor() {}
 
   login(credentials: ILogin): Observable<AuthData> {
     console.log('credentials', credentials);
@@ -37,6 +37,8 @@ private store = inject(Store)
       .pipe(
         map(() => {
           this.storage.removeItem();
+          this.store.dispatch(new ClearUsersData())
+          this.store.dispatch(new ClearMassages())
           this.router.navigate(['auth', 'login']);
         }),
         takeUntilDestroyed(this.destroyRef))
