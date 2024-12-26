@@ -2,9 +2,7 @@
     <div card-header>Messages</div>
     <div card-body class="border-b border-secondary">
         @for(message of messages(); track $index) {
-            <!-- <app-message [message]="message"></app-message> -->
-            <app-message-item></app-message-item>
+            <app-message-item [message]="message"></app-message-item>
         }
-        {{ user()?.email  }}
     </div>
 </app-card>

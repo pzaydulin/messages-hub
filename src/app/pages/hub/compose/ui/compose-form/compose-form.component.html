@@ -1,0 +1,21 @@
+<form #composeForm="ngForm">
+    <input type="text" class="w-full" pInputText required minlength="3" [(ngModel)]="controls.recipient" name="recipient" id="recipient" placeholder="Recipient">
+    <small class="p-error block"  
+        *ngIf="composeForm.controls['recipient']?.invalid && composeForm.controls['recipient'].dirty"
+        >Recipient is not valid.</small>    
+    <input type="text" class="w-full !mt-3"  pInputText required [(ngModel)]="controls.subject" name="subject" placeholder="Subject">
+    <small class="p-error block"  
+        *ngIf="composeForm.controls['subject']?.invalid && composeForm.controls['subject'].dirty"
+        >Subject is not valid.</small>
+    <textarea pInputTextarea class="w-full !mt-3 !mb-0" [rows]="5" required name="message" [(ngModel)]="controls.message" placeholder="Message"></textarea>
+    <small class="p-error block"  
+        *ngIf="composeForm.controls['message']?.invalid && composeForm.controls['message'].dirty"
+        >Message is not valid.</small>
+  <p-button 
+    label="Submit" 
+    type="submit"
+    class="bg-primary text-secondary rounded-lg !mt-2"
+    [style]="{ padding: '8px 32px' }"
+    [disabled]="composeForm.invalid"
+    icon="pi pi-angle-double-right" iconPos="right"></p-button>    
+</form>

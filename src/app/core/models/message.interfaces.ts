@@ -1,7 +1,9 @@
+import { IUser } from './user.interfaces';
+
 export interface IMessage {
   _id: string;
-  to: string;
-  sender: string;
+  to: Partial<IUser>;
+  sender: Partial<IUser>;
   subject: string;
   body: string;
   status: number;
