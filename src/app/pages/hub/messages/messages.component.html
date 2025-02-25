@@ -1,8 +1,15 @@
 <app-card>
-    <div card-header>Messages</div>
+    <div card-header>{{ type() | titlecase }} messages</div>
     <div card-body class="border-b border-secondary">
-        @for(message of messages(); track $index) {
-            <app-message-item [message]="message"></app-message-item>
+        @for(message of filteredMessages(); track $index) {
+            <app-message-item [message]="message" [type]="type()" (click)="readMessage(message)" (deleted)="deleteMessage(message)"></app-message-item>
         }
     </div>
 </app-card>
+
+<p-dialog [header]="currentMessage().subject" [modal]="true" [(visible)]="showModal" [style]="{ width: '50vw' }">
+    <span class="p-text-secondary block mb-8">From: {{ currentMessage().sender ? currentMessage().sender.name : "" }}</span>
+    <div class="flex items-center gap-4 mb-4 font-semibold">
+        {{ currentMessage().body }}
+    </div>
+</p-dialog>

@@ -1,13 +1,15 @@
-<form #composeForm="ngForm">
-    <input type="text" class="w-full" pInputText required minlength="3" [(ngModel)]="controls.recipient" name="recipient" id="recipient" placeholder="Recipient">
-    <small class="p-error block"  
-        *ngIf="composeForm.controls['recipient']?.invalid && composeForm.controls['recipient'].dirty"
-        >Recipient is not valid.</small>    
+<form #composeForm="ngForm" (ngSubmit)="onSubmit()">
+    <app-recipient-input name="recipientInput" [(ngModel)]="controls.to" required email [users]="users()" />
+    @if((composeForm.controls['recipientInput'] && composeForm.controls['recipientInput'].hasError('email')) || wrongRecipient()) {
+        <small class="p-error block">
+            Recipient is not valid. Please select from the list of users.
+        </small>    
+    }
     <input type="text" class="w-full !mt-3"  pInputText required [(ngModel)]="controls.subject" name="subject" placeholder="Subject">
     <small class="p-error block"  
         *ngIf="composeForm.controls['subject']?.invalid && composeForm.controls['subject'].dirty"
         >Subject is not valid.</small>
-    <textarea pInputTextarea class="w-full !mt-3 !mb-0" [rows]="5" required name="message" [(ngModel)]="controls.message" placeholder="Message"></textarea>
+    <textarea pInputTextarea class="w-full !mt-3 !mb-0" [rows]="5" required name="message" [(ngModel)]="controls.body" placeholder="Message"></textarea>
     <small class="p-error block"  
         *ngIf="composeForm.controls['message']?.invalid && composeForm.controls['message'].dirty"
         >Message is not valid.</small>
@@ -16,6 +18,7 @@
     type="submit"
     class="bg-primary text-secondary rounded-lg !mt-2"
     [style]="{ padding: '8px 32px' }"
-    [disabled]="composeForm.invalid"
+    [disabled]="composeForm.invalid || !formValid()"
     icon="pi pi-angle-double-right" iconPos="right"></p-button>    
 </form>
+

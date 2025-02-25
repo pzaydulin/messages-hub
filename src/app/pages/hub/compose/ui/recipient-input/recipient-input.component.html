@@ -1,0 +1,15 @@
+<div class="flex flex-col relative">
+    <input type="text" pInputText class="w-full" placeholder="Recipient" (input)="onInput($event)" [value]="value()">
+
+    <div class="absolute shadow left-0 top-11 bg-white min-w-72">
+    @for(user of filteredUsers(); track user._id) {
+        <div (click)="selectedUser(user)" class="flex items-center border-t border-secondary hover:bg-secondary p-5 py-3 cursor-pointer">
+            <div class="flex-none bg-secondary px-4 py-3 rounded-xl font-bold text-xl">{{ user.name | initials }}</div>
+            <div class="flex-1 ms-3">
+                <div class="font-bold">{{ user.name }}</div>
+                <div>{{ user.email }}</div>
+            </div>
+        </div>
+    }
+    </div>
+</div>

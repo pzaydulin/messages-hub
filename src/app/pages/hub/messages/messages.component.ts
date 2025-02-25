@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, effect, inject, Input, input, signal } from '@angular/core';
 import { CardComponent } from '../../../shared/components/card/card.component';
 import { MessageItemComponent } from './ui/message-item/message-item.component';
 import { MessageService } from './data-access/message.service';
@@ -8,19 +8,22 @@ import { GetLoggedInUser, UserState } from '../../../core/store-ngxs/user.store'
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { GetMessages, MessageState } from '../../../core/store-ngxs/message.store';
 import { tap } from 'rxjs';
+import { IMessage } from '../../../core/models/message.interfaces';
+import { MessageType } from '../../../core/models/common.interfaces';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-messages',
   standalone: true,
-  imports: [CommonModule, CardComponent, MessageItemComponent],
+  imports: [CommonModule, CardComponent, MessageItemComponent, DialogModule],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.css',
 })
 export class MessagesComponent {
   private store: Store = inject(Store);
-  
+
   ////////////////////////////////
-  // getting data without using NgxS
+  // DATA WITHOUT USING NGXS
 
   // private messageService: MessageService = inject(MessageService);
 
@@ -40,20 +43,62 @@ export class MessagesComponent {
   //
   ////////////////////////////////
 
-  // getting data using NgxS
+  // DATA FROM NGXS STATE
+
+  // getting type from router data
+  type = input<MessageType>('inbox');
 
   user = toSignal(this.store.select(UserState.getLoggedInUser));
-  messages = toSignal(this.store.select(MessageState.getAllMessages));
+  messages = toSignal(this.store.select(MessageState.getAllMessages), {
+    initialValue: [] as IMessage[],
+  });
 
   constructor() {
     if (!this.user()) {
-      this.store.dispatch(new GetLoggedInUser()).pipe(
-        tap(() => {
-          this.store.dispatch(new GetMessages());
-        }),
-        // takeUntilDestroyed()
-      ).subscribe()
-    }   
+      this.store
+        .dispatch(new GetLoggedInUser())
+        .pipe(
+          tap(() => {
+            this.store.dispatch(new GetMessages());
+          })
+          // takeUntilDestroyed()
+        )
+        .subscribe();
+    }
   }
 
+  filterMessages = {
+    inbox: () => {
+      return this.messages().filter(
+        (message) => message.status === 1 && message.to._id === this.user()?._id
+      );
+    },
+    sent: () => {
+      return this.messages().filter(
+        (message) =>
+          message.status === 1 && message.sender._id === this.user()?._id
+      );
+    },
+    trash: () => {
+      return this.messages().filter((message) => message.status === 3);
+    },
+  };
+
+  filteredMessages = computed(() => {
+    return this.filterMessages[this.type()]();
+  });
+
+
+  protected currentMessage = signal({} as IMessage);
+  showModal: boolean = false;
+
+  deleteMessage(message: IMessage) {
+    // this.messageService.deleteMessage(message);
+    console.log('delete message', message.sender.name);
+  }
+
+  readMessage(message: IMessage) {
+    this.showModal = true;
+    this.currentMessage.set(message);
+  }
 }

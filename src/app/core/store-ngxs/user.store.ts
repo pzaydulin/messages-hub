@@ -17,14 +17,14 @@ export class ClearUsersData {
 }
 
 export interface UserStateModel {
-  users: IUser[] | undefined;
+  users: IUser[];
   user: IUser | undefined;
 }
 
 @State<UserStateModel>({
   name: 'user',
   defaults: {
-    users: undefined,
+    users: [],
     user: undefined,
   },
 })
@@ -58,7 +58,7 @@ export class UserState {
   @Action(ClearUsersData)
   clearUsersData(ctx: StateContext<UserStateModel>) {
     ctx.patchState({
-      users: undefined,
+      users: [],
       user: undefined,
     });
   }

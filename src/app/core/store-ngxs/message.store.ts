@@ -14,7 +14,7 @@ export class ClearMassages {
 }
 
 export interface MessageStateModel {
-    messages: IMessage[] | undefined;
+    messages: IMessage[];
 }
 
 @State<MessageStateModel>({

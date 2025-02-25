@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -18,19 +17,19 @@ export class MenuComponent {
       {
         label: 'Inbox',
         icon: 'pi pi-inbox',
-        routerLink: ['/messages'],
+        routerLink: ['messages', 'inbox'],
         routerLinkActiveOptions: { exact: true },
       },
       {
         label: 'Sent',
         icon: 'pi pi-send',
-        routerLink: ['/sent'],
+        routerLink: ['messages', 'sent'],
         routerLinkActive: 'is-active',
       },
       {
         label: 'Trash',
         icon: 'pi pi-trash',
-        routerLink: ['/trash'],
+        routerLink: ['messages', 'trash'],
         routerLinkActive: 'is-active',
       },
     ];
