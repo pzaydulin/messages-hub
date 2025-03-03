@@ -11,16 +11,23 @@ import { tap } from 'rxjs';
 import { IMessage } from '../../../core/models/message.interfaces';
 import { MessageType } from '../../../core/models/common.interfaces';
 import { DialogModule } from 'primeng/dialog';
+import { MessageService as ToastService } from 'primeng/api';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-messages',
   standalone: true,
-  imports: [CommonModule, CardComponent, MessageItemComponent, DialogModule],
+  imports: [CommonModule, CardComponent, MessageItemComponent, DialogModule, ToastModule],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.css',
 })
 export class MessagesComponent {
   private store: Store = inject(Store);
+  private messageService: MessageService = inject(MessageService);
+  private toastService: ToastService = inject(ToastService);
+  private router: Router = inject(Router);
 
   ////////////////////////////////
   // DATA WITHOUT USING NGXS
@@ -88,17 +95,35 @@ export class MessagesComponent {
     return this.filterMessages[this.type()]();
   });
 
-
   protected currentMessage = signal({} as IMessage);
   showModal: boolean = false;
 
-  deleteMessage(message: IMessage) {
-    // this.messageService.deleteMessage(message);
-    console.log('delete message', message.sender.name);
-  }
-
+  
   readMessage(message: IMessage) {
     this.showModal = true;
     this.currentMessage.set(message);
   }
+
+
+  deleteMessage(message: IMessage) {
+    this.messageService.deleteMessage(message).subscribe({
+      next: (response) => {
+        this.toastService.add({
+          severity: 'warn',
+          summary: 'Warn',
+          detail: 'Message is marked as deleted and moved to Trash',
+        });
+        this.store.dispatch(new GetMessages());
+        this.router.navigate(['hub/inbox']);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.statusText,
+        });
+      }
+    });
+  }
+
 }

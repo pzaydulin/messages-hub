@@ -43,7 +43,7 @@ export class MessageService {
   private store: Store = inject(Store);
 
   // get currentuser from login.STATE
-  // TODO: 
+  // TODO:
 
   messages$ = new Subject<IMessage[]>();
 
@@ -99,7 +99,13 @@ export class MessageService {
     }));
   }
 
-  loadMessages() {
-    this.messages$.next([]);
+  deleteMessage(data: IMessage) {
+    return this.http.get(API_ENDPOINT.MESSAGES.DELETE + '/' + data._id + '/delete');
   }
+
+  // this method using if get info from localstorage
+  // loadMessages() {
+  //   this.messages$.next([]);
+  // }
+
 }

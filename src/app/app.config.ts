@@ -8,6 +8,7 @@ import { provideStore } from '@ngxs/store';
 import { UserState } from './core/store-ngxs/user.store';
 import { withNgxsReduxDevtoolsPlugin } from '@ngxs/devtools-plugin';
 import { MessageState } from './core/store-ngxs/message.store';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,5 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(withInterceptors([httpInterceptor])),
     provideStore([UserState, MessageState], withNgxsReduxDevtoolsPlugin()),
+    MessageService
   ],
 };

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
+import { BadgeModule } from 'primeng/badge';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [MenuModule],
+  imports: [MenuModule, BadgeModule],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
 })
@@ -19,6 +20,7 @@ export class MenuComponent {
         icon: 'pi pi-inbox',
         routerLink: ['messages', 'inbox'],
         routerLinkActiveOptions: { exact: true },
+        badge: '2'
       },
       {
         label: 'Sent',

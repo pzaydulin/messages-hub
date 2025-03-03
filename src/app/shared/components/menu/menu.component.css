@@ -19,3 +19,7 @@
   @apply bg-background;
 }
 
+:host ::ng-deep .p-menuitem-badge {
+  @apply bg-muted_foreground text-white rounded-full;
+}
+

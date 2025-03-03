@@ -20,6 +20,7 @@
     "@angular/router": "^18.2.13",
     "@ngxs/devtools-plugin": "^18.1.6",
     "@ngxs/store": "^18.0.0",
+    "ngx-socket-io": "^4.7.0",
     "primeicons": "^7.0.0",
     "primeng": "^17.18.12",
     "rxjs": "~7.8.0",

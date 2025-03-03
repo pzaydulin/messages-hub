@@ -6,7 +6,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { RecipientInputComponent } from '../recipient-input/recipient-input.component';
 import { ComposeService } from '../../data-access/compose.service';
-import { IUser } from '../../../../../core/models/user.interfaces';
+import { ToastModule } from 'primeng/toast';
+import { IMessage } from '../../../../../core/models/message.interfaces';
 
 @Component({
   selector: 'app-compose-form',
@@ -18,6 +19,7 @@ import { IUser } from '../../../../../core/models/user.interfaces';
     InputTextareaModule,
     ButtonModule,
     RecipientInputComponent,
+    ToastModule
   ],
   templateUrl: './compose-form.component.html',
 })
@@ -66,7 +68,7 @@ export class ComposeFormComponent {
   })
 
   onSubmit() {
-    console.log('Form submitted', this.formValue());
+    this.composeService.sentMessage(this.formValue() as IMessage);
   }
 
 }

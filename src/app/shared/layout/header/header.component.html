@@ -15,6 +15,8 @@
     <span class="text-white px-2 text-3xl">Messages Hub</span>
   </ng-template>
   <ng-template pTemplate="end">
+    <div [title]=user()?.name class="flex-none bg-secondary p-2 py-1 pb-0 mr-2 rounded-xl font-bold text-lg">{{ (user()?.name ?? "") | initials }}</div>
+
     <p-button icon="pi pi-sign-out text-2xl text-secondary" [text]="true" (click)="onLogout()" />
   </ng-template>
 </p-toolbar>

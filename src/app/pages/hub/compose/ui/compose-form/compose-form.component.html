@@ -1,3 +1,4 @@
+<p-toast />
 <form #composeForm="ngForm" (ngSubmit)="onSubmit()">
     <app-recipient-input name="recipientInput" [(ngModel)]="controls.to" required email [users]="users()" />
     @if((composeForm.controls['recipientInput'] && composeForm.controls['recipientInput'].hasError('email')) || wrongRecipient()) {

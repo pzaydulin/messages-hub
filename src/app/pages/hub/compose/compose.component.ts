@@ -7,7 +7,13 @@ import { RecipientInputComponent } from './ui/recipient-input/recipient-input.co
   selector: 'app-compose',
   standalone: true,
   imports: [CardComponent, ComposeFormComponent, RecipientInputComponent],
-  templateUrl: './compose.component.html',
-  styleUrl: './compose.component.css',
+  template: `
+  <app-card>
+    <div card-header>Compose Message</div>
+    <div card-body>
+        <app-compose-form />
+    </div>
+  </app-card>
+  `,
 })
 export class ComposeComponent {}

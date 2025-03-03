@@ -1,10 +1,14 @@
-import { Component, Inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, Inject, OnInit, signal } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FormsModule } from '@angular/forms';
 import { PrimeNGConfig } from 'primeng/api';
+import { SocketService } from './core/data-access/socket.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Store } from '@ngxs/store';
+import { GetMessages } from './core/store-ngxs/message.store';
 
 interface City {
   name: string;
@@ -30,6 +34,10 @@ interface City {
 // optional configuration with the default configuration
 
 export class AppComponent implements OnInit {
+
+  private socketService: SocketService = inject(SocketService);
+  private store: Store = inject(Store);
+
   primeTheme = 'lara-light-blue';
   darkMode = signal<{ dark: boolean; prime: string }>({
     dark: true,
@@ -54,8 +62,20 @@ export class AppComponent implements OnInit {
     private primengConfig: PrimeNGConfig
   ) {}
 
+  
+  destroyRef = inject(DestroyRef);
+
   ngOnInit() {
     this.primengConfig.ripple = true;
+
+    this.socketService
+      .getMessage()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((message) => {
+        console.log('message recieved');
+        
+        this.store.dispatch(new GetMessages());
+      });
   }
 
   setTheme() {

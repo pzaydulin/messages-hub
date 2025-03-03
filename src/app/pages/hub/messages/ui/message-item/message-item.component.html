@@ -2,7 +2,7 @@
 <div class="flex group items-center border-t border-secondary hover:bg-secondary p-5 py-3 cursor-pointer">
     <div class="flex-none bg-secondary px-4 py-3 rounded-xl font-bold text-xl">{{ (name ?? "") | initials }}</div>
     <div class="flex-1 ms-3">
-        <div class="font-bold">{{ ((type() === 'inbox') ? "" : "To: ") + name }}</div>
+        <div class="font-bold">{{ ((type() === 'sent') ? "To: " : "") + name }}</div>
         <div>{{ message().subject | truncate:120 }}</div>
     </div>
     <div class="flex-none text-gray-400 text-xs">{{ message().createdAt | dateAgo }}</div>
