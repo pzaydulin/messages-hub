@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext, Store } from "@ngxs/store";
 import { IMessage } from "../models/message.interfaces";
 import { inject, Injectable } from "@angular/core";
 import { UserState } from "./user.store";
-import { of, switchMap, take, tap } from "rxjs";
+import { tap } from "rxjs";
 import { MessageService } from "../../pages/hub/messages/data-access/message.service";
 
 export class GetMessages {
@@ -14,13 +14,15 @@ export class ClearMassages {
 }
 
 export interface MessageStateModel {
-    messages: IMessage[];
+  messages: IMessage[];
+  unread: string;
 }
 
 @State<MessageStateModel>({
   name: 'messages',
   defaults: {
     messages: [],
+    unread: '',
   },
 })
 @Injectable()
@@ -30,12 +32,25 @@ export class MessageState {
 
   @Action(GetMessages)
   getAllMessages(ctx: StateContext<MessageStateModel>) {
-    return this.store.select(UserState.getLoggedInUser).pipe(
-      take(1),
-      switchMap((user) => {
-        return user ? this.messageService.getMessages(user) : of([]);
-      }),
+    const loggedInUser = this.store.selectSnapshot(UserState.getLoggedInUser);
+    let unread = 0;
+    return this.messageService.getMessages(loggedInUser).pipe(
       tap((messages) => {
+        ctx.patchState({ unread: '' });
+        // check if there are unread messages
+        unread = messages.reduce((acc, message) => {
+          if (
+            loggedInUser &&
+            message.status === 1 &&
+            message.sender._id !== loggedInUser._id
+          ) {
+            return acc + 1;
+          }
+          return acc;
+        }, 0);
+        if (unread > 0) {
+          ctx.patchState({ unread: unread.toString() });
+        }
         ctx.patchState({ messages });
       })
     );
@@ -43,7 +58,12 @@ export class MessageState {
 
   @Action(ClearMassages)
   clearMessages(ctx: StateContext<MessageStateModel>) {
-    ctx.patchState({ messages: [] });
+    ctx.patchState({ messages: [], unread: '' });
+  }
+
+  @Selector()
+  static getCountUnreadMessages(state: MessageStateModel) {
+    return state.unread;
   }
 
   @Selector()

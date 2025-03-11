@@ -18,8 +18,7 @@
 :host ::ng-deep .p-menu  .p-menuitem-link-active {
   @apply bg-background;
 }
-
 :host ::ng-deep .p-menuitem-badge {
-  @apply bg-muted_foreground text-white rounded-full;
+  @apply bg-muted_foreground rounded-full min-w-[auto];
 }
 

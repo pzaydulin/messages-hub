@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 
@@ -8,12 +8,15 @@ import { io, Socket } from 'socket.io-client';
 export class SocketService {
 
   private socket: Socket;
-  
+  public sender = signal(false);
+
+
   constructor() { 
     this.socket = io('http://localhost:4000');
   }
 
   sentMessage(msg: string) {
+    this.sender.set(true);
     this.socket.emit('message sent', msg);
   }
 

@@ -103,6 +103,10 @@ export class MessageService {
     return this.http.get(API_ENDPOINT.MESSAGES.DELETE + '/' + data._id + '/delete');
   }
 
+  readMessage(data: IMessage) {
+    return this.http.get(API_ENDPOINT.MESSAGES.READ + '/' + data._id + '/read');
+  }
+
   // this method using if get info from localstorage
   // loadMessages() {
   //   this.messages$.next([]);

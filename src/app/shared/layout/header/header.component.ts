@@ -6,11 +6,12 @@ import { InitialsPipe } from '../../pipes/initials.pipe';
 import { Store } from '@ngxs/store';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserState } from '../../../core/store-ngxs/user.store';
+import { BadgeModule } from 'primeng/badge';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [ToolbarModule, ButtonModule, InitialsPipe],
+  imports: [ToolbarModule, ButtonModule, InitialsPipe, BadgeModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })

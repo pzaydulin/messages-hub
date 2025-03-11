@@ -9,6 +9,10 @@ import { SocketService } from './core/data-access/socket.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store } from '@ngxs/store';
 import { GetMessages } from './core/store-ngxs/message.store';
+import { ToastModule } from 'primeng/toast';
+import { MessageService as ToastService } from 'primeng/api';
+
+
 
 interface City {
   name: string;
@@ -23,6 +27,7 @@ interface City {
     FormsModule,
     ButtonModule,
     MultiSelectModule,
+    ToastModule
   ],
   // templateUrl: './app.component.html',
   template: '<router-outlet />',
@@ -32,11 +37,10 @@ interface City {
 // RIPPLE при очистке не забудь об этом!!!
 // https://sakai.primeng.org/documentation
 // optional configuration with the default configuration
-
 export class AppComponent implements OnInit {
-
   private socketService: SocketService = inject(SocketService);
   private store: Store = inject(Store);
+  private toastService: ToastService = inject(ToastService);
 
   primeTheme = 'lara-light-blue';
   darkMode = signal<{ dark: boolean; prime: string }>({
@@ -62,9 +66,7 @@ export class AppComponent implements OnInit {
     private primengConfig: PrimeNGConfig
   ) {}
 
-  
   destroyRef = inject(DestroyRef);
-
   ngOnInit() {
     this.primengConfig.ripple = true;
 
@@ -72,8 +74,17 @@ export class AppComponent implements OnInit {
       .getMessage()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((message) => {
-        console.log('message recieved');
-        
+
+        console.log('new message recieved');
+        if(!this.socketService.sender()) {
+          this.toastService.add({
+            severity: 'info',
+            summary: 'Info',
+            detail: 'New Message Received',
+          });   
+          this.socketService.sender.set(false);
+        }
+
         this.store.dispatch(new GetMessages());
       });
   }

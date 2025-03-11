@@ -77,13 +77,13 @@ export class MessagesComponent {
   filterMessages = {
     inbox: () => {
       return this.messages().filter(
-        (message) => message.status === 1 && message.to._id === this.user()?._id
+        (message) => message.status !== 3 && message.to._id === this.user()?._id
       );
     },
     sent: () => {
       return this.messages().filter(
         (message) =>
-          message.status === 1 && message.sender._id === this.user()?._id
+          message.status !== 3 && message.sender._id === this.user()?._id
       );
     },
     trash: () => {
@@ -101,7 +101,25 @@ export class MessagesComponent {
   
   readMessage(message: IMessage) {
     this.showModal = true;
-    this.currentMessage.set(message);
+    this.currentMessage.set(message);       
+
+    // if message is already read, do not send request to server
+    if(message.status === 2 || message.status === 3) {
+      return;
+    }
+
+    this.messageService.readMessage(message).subscribe({
+      next: () => {
+        this.store.dispatch(new GetMessages());
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.statusText,
+        });
+      }
+    })
   }
 
 
