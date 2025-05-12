@@ -57,11 +57,12 @@ export class RecipientInputComponent
     this.writeValue(user.email);
     this.filteredUsers.set([]);
     // this.recipient.emit(user);
+    this.onChange(user.email);
   }
 
   writeValue(value: string): void {
     this.value.set(value);
-    this.onChange(value);
+    // this.onChange(value);
   }
 
   registerOnChange(fn: () => void): void {

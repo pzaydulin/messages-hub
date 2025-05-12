@@ -26,7 +26,7 @@ import { ILogin } from '../../../core/models/auth.interfaces';
             <a routerLink="/auth/register" class="font-semibold"
               >Register here</a
             >
-            <button (click)="storageService.removeItem()">Clear</button>
+            <!-- <button (click)="storageService.removeItem()">Clear</button> -->
           </p>
         </div>
       </app-card>
