@@ -4,7 +4,7 @@
 
 This project serves as a demonstration of real-time messaging functionality.
 
-Socket.IO is used for real-time communication, with the same functionality implemented on the local server.
+**Socket.IO** is used for real-time communication, with the same functionality implemented on the local server.
 
 For user authentication (**JWT token, Refresh token, Interceptor, Guards**), a local server built with **Express** is used ([backend-express](https://github.com/pzaydulin/backend-express)). Data management is implemented using **NgXS** (although excessive for this use case, it is included for demonstration purposes).  
 
